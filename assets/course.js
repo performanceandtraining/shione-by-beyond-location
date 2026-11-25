@@ -35,7 +35,7 @@ function location(){D.notes=[...new Set([...(D.notes||[]),D.travel_context,D.ori
  let tileError=null;const vector=tile.getMaplibreMap();
  vector.on('error',()=>{if(!tileError){tileError=el('div','Background map could not load. Check your internet connection.','map-error');stage.append(tileError);}});
  vector.on('load',()=>{tileError?.remove();tileError=null;});
- const areaLayer=L.geoJSON(D.boundary,{style:{color:'#3188c9',weight:2,fillColor:'#4baaf4',fillOpacity:.12}}).addTo(map);map.fitBounds(areaLayer.getBounds(),{padding:[25,25]});
+ const areaLayer=L.geoJSON(D.boundary,{style:D.boundary_outline?{opacity:0,fillOpacity:0,interactive:false}:{color:'#3188c9',weight:2,fillColor:'#4baaf4',fillOpacity:.12}}).addTo(map);if(D.boundary_outline)L.geoJSON(D.boundary_outline,{style:{color:'#3188c9',weight:2.5,opacity:1,fill:false},interactive:false}).addTo(map);map.fitBounds(areaLayer.getBounds(),{padding:[25,25]});
  if(D.geometry_credit)map.attributionControl.addAttribution(D.geometry_credit.replace(/[<>]/g,''));
  L.marker([D.origin.coordinates[1],D.origin.coordinates[0]],{icon:L.divIcon({className:'origin-marker',iconSize:[14,14]})}).addTo(map).bindTooltip(el('span',D.origin.label),{direction:'top'});
  const layers=new Map(),roads=D.features.filter(f=>f.category==='roads');let selected=null,showAll=false,category='landmarks';const tabButtons=new Map();
